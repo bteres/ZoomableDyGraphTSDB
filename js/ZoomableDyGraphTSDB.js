@@ -300,6 +300,7 @@ ZoomableDyGraphTSDB.prototype.drawDygraph = function (graphData) {
         var graphCfg = {
             axes: axes,
             labels: labels,
+            ylabel: labels[1],
             file: dyData,
             dateWindow: [detailStartDateTm.getTime(), detailEndDateTm.getTime()]
         };
