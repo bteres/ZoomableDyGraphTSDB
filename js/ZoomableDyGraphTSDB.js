@@ -1,8 +1,9 @@
 function ZoomableDyGraphTSDB (pageCfg) {
     this.$graphCont = pageCfg.$graphCont;
     this.$rangeBtnsCont = pageCfg.$rangeBtnsCont;
-    this.url = pageCfg.url;
-    this.metric = pageCfg.metric;
+    this.$metricDropdownCont = pageCfg.$metricDropdownCont;
+    // this.url = pageCfg.url;
+    // this.metric = pageCfg.metric;
     this.startDate = pageCfg.startDate;
 
     this.dataProvider = new GraphDataProvider();
@@ -19,6 +20,38 @@ ZoomableDyGraphTSDB.prototype.init = function () {
 
     this._setupRangeButtons();
 
+    this._setupDropdownMetrics();
+};
+
+ZoomableDyGraphTSDB.prototype._setupDropdownMetrics = function () {
+    var serverMetrics = new CORSRequester();
+    serverMetrics.onServerSuggestionCallbacks.add($.proxy(this._onSuggestionLoad, this));
+    serverMetrics.makeSuggestion(serverMetrics.onServerSuggestionCallbacks.fire);
+
+    var self = this;
+
+    this.$metricDropdownCont.on('change', function (evt) {
+        evt.preventDefault();
+        self.metric =  self.$metricDropdownCont.children(':selected').text();
+
+        self.$metricDropdownCont.children().removeClass('active');
+
+        $(this).addClass('active');
+
+        self._initializeGraph();
+    });
+};
+
+ZoomableDyGraphTSDB.prototype._onSuggestionLoad = function(metrics) {
+    for (i = 0; i < metrics.length; i++) {
+        var optionHTML = "<option value='"+metrics[i]+ (i === 0 ? "' selected='selected'" : "'") + ">"+metrics[i]+"</option>";
+        this.$metricDropdownCont.append(optionHTML);
+    }
+    this.metric = metrics[0];
+    this._initializeGraph();
+};
+
+ZoomableDyGraphTSDB.prototype._initializeGraph = function() {
     // Default range dates
     var rangeEndMom = moment().utc();
     var rangeStartMom = moment(this.startDate, "YYYYY/MM/DD");
@@ -28,55 +61,55 @@ ZoomableDyGraphTSDB.prototype.init = function () {
     var detailStartMom = moment(detailEndMom);
     detailStartMom.add(-10, 'day');
 
+    this.showSpinner(true);
     this.dataProvider.loadData(this.metric, rangeStartMom.toDate(),
                                rangeEndMom.toDate(), detailStartMom.toDate(),
                                detailEndMom.toDate(), this.$graphCont.width());
-
-};
+}
 
 ZoomableDyGraphTSDB.prototype._setupRangeButtons = function () {
     var self = this;
 
     this.$rangeBtnsCont.children().on('click', function (evt) {
-    evt.preventDefault();
-    var rangeType = evt.target.name.toString().replace("range-btn-", "");
+        evt.preventDefault();
+        var rangeType = evt.target.name.toString().replace("range-btn-", "");
 
-    self.$rangeBtnsCont.children().removeClass('active');
+        self.$rangeBtnsCont.children().removeClass('active');
 
-    $(this).addClass('active');
+        $(this).addClass('active');
 
-    var rangeEndMom;
-    rangeEndMom = moment().utc();
-    // rangeEndMom.minutes(0).seconds(0);
-    // rangeEndMom.add('hour', 1);
+        var rangeEndMom;
+        rangeEndMom = moment().utc();
+        // rangeEndMom.minutes(0).seconds(0);
+        // rangeEndMom.add('hour', 1);
 
-    //console.log("rangeType", rangeType);
+        //console.log("rangeType", rangeType);
 
-    var rangeStartMom;
-    if (rangeType == "1d") {
-        rangeStartMom = moment.utc(rangeEndMom).add('day', -1);
-    } else if (rangeType == "1w") {
-        rangeStartMom = moment.utc(rangeEndMom).add('week', -1);
-    } else if (rangeType == "1m") {
-        rangeStartMom = moment.utc(rangeEndMom).add('month', -1);
-    } else if (rangeType == "6m") {
-        rangeStartMom = moment.utc(rangeEndMom).add('month', -6);
-    } else if (rangeType == "1y") {
-        rangeStartMom = moment.utc(rangeEndMom).add('year', -1);
-    } else if (rangeType == "5y") {
-        rangeStartMom = moment.utc(rangeEndMom).add('year', -5);
-    } else if (rangeType == "ytd") {
-        rangeStartMom = moment().startOf('year').utc();
-    }
+        var rangeStartMom;
+        if (rangeType == "1d") {
+            rangeStartMom = moment.utc(rangeEndMom).add('day', -1);
+        } else if (rangeType == "1w") {
+            rangeStartMom = moment.utc(rangeEndMom).add('week', -1);
+        } else if (rangeType == "1m") {
+            rangeStartMom = moment.utc(rangeEndMom).add('month', -1);
+        } else if (rangeType == "6m") {
+            rangeStartMom = moment.utc(rangeEndMom).add('month', -6);
+        } else if (rangeType == "1y") {
+            rangeStartMom = moment.utc(rangeEndMom).add('year', -1);
+        } else if (rangeType == "5y") {
+            rangeStartMom = moment.utc(rangeEndMom).add('year', -5);
+        } else if (rangeType == "ytd") {
+            rangeStartMom = moment().startOf('year').utc();
+        }
 
-    //For demo purposes, when range is reset, auto reset detail view to same extents as range
-    var detailStartMom = rangeStartMom.clone();
-    var detailEndMom = rangeEndMom.clone();
+        //For demo purposes, when range is reset, auto reset detail view to same extents as range
+        var detailStartMom = rangeStartMom.clone();
+        var detailEndMom = rangeEndMom.clone();
 
-    self.showSpinner(true);
-    self.dataProvider.loadData(self.metric, rangeStartMom.toDate(),
-                               rangeEndMom.toDate(), detailStartMom.toDate(),
-                               detailEndMom.toDate(), self.$graphCont.width());
+        self.showSpinner(true);
+        self.dataProvider.loadData(self.metric, rangeStartMom.toDate(),
+                                   rangeEndMom.toDate(), detailStartMom.toDate(),
+                                   detailEndMom.toDate(), self.$graphCont.width());
     });
 
 };

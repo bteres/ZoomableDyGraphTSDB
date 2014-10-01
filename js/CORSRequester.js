@@ -1,8 +1,12 @@
 function CORSRequester (seriesName) {
-    this.seriesName = seriesName;
-    this.url = 'http://54.69.113.40:4243/api/query?start=';
+    if (seriesName != null)
+        this.seriesName = seriesName;
+
+    this.url = 'http://54.69.113.40:4243';
 
     this.onServerDataLoadCallbacks = $.Callbacks();
+
+    this.onServerSuggestionCallbacks = $.Callbacks();
 }
 
 CORSRequester.prototype._createRequest = function(url) {
@@ -70,9 +74,25 @@ CORSRequester.prototype.makeRequest = function(dataLoadReq, onResult) {
     xhr.send();
 };
 
+CORSRequester.prototype.makeSuggestion = function(onResult) {
+    var url = this.url.concat('/api/suggest?type=metrics');
+    var xhr = this._createRequest(url);
+
+    xhr.onload = function(){
+        var obj = JSON.parse(this.response);
+        onResult(obj);
+    };
+
+    xhr.onerror = function() {
+        alert('Could not retrieve a list of metrics from the database!');
+    };
+
+    xhr.send();
+}
+
 CORSRequester.prototype._createURL = function(startDateTm, endDateTm, numIntervals) {
     var url = '';
-    url = url.concat(this.url, new Date(startDateTm).getTime(), '&end=', new Date(endDateTm).getTime(), '&m=avg:');
+    url = url.concat(this.url, '/api/query?start=', new Date(startDateTm).getTime(), '&end=', new Date(endDateTm).getTime(), '&m=avg:');
 
     var timeDiff = endDateTm - startDateTm;
     var interval = Math.floor(timeDiff/numIntervals);

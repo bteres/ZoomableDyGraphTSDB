@@ -15,6 +15,7 @@ Go to [http://witsmeter.tk](http://witsmeter.tk) for a basic demo.
 * Create dropdown list from OpenTSDB metrics and plot on selection.
 * Support multiple series on one plot.
 * Allow for error bars on graph.
+* Allow for further options from html such as setting start date, metric name, etc.
 
 ### Acknowledgement
 1. [kaliatech on Github](https://github.com/kaliatech). A lot of the code used in this library is taken from his work done on creating [dygraphs with dynamic zooming](https://github.com/kaliatech/dygraphs-dynamiczooming-example/blob/master/README.md).

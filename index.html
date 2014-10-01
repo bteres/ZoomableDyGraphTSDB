@@ -5,14 +5,37 @@
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="js/dygraph-combined.js"></script>
+    <script src="js/ZoomableDyGraphTSDB.js"></script>
+    <script src="js/GraphDataProvider.js"></script>
+    <script src="js/CORSRequester.js"></script>
+    <script src="js/spin.js"></script>
+    <script src="js/moment.js"></script>
 </head>
 <body>
-<div class="row">
-    <div class="col-md-12">
+<div class="container">
 
-      <div id="graphdiv2" class="graph-cont">
-      </div>
-      <div>
+    <div class="row col-md-12 text-center">
+        <h1>Fuel Cell Monitoring</h1>
+    </div>
+
+    <div id="metricSelection" class="row col-md-12">
+        <span class="col-md-5">
+            <select name="" id="metricDropdown" class="form-control">
+            </select>
+        </span>
+        <span class="col-md-7"></span>
+    </div>
+
+    <br/>
+
+    <div id="graphdiv2" class="row graph-cont col-md-12">
+    </div>
+
+    <div class="row">
 
         <span id="range-btns-cont-1" class="btn-group range-btns-cont">
             <button name="range-btn-5y" class="btn btn-default btn-mini">
@@ -38,26 +61,17 @@
             </button>
 
         </span>
-      </div>
     </div>
-  </div>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="js/dygraph-combined.js"></script>
-<script src="js/ZoomableDyGraphTSDB.js"></script>
-<script src="js/GraphDataProvider.js"></script>
-<script src="js/CORSRequester.js"></script>
-<script src="js/spin.js"></script>
-<script src="js/moment.js"></script>
+</div>
 
 <script>
     $(document).ready(function () {
         var pageCfg = {
             $graphCont: $("#graphdiv2"),
             $rangeBtnsCont: $("#range-btns-cont-1"),
-            url: "http://witsmeter.tk:4243/api/query?",
-            metric: "100-JT-001",
+            $metricDropdownCont: $("#metricDropdown"),
+            // url: "http://witsmeter.tk:4243/api/query?",
+            // metric: "100-JT-001",
             startDate: "2014/07/01"
         };
         var zdgt = new ZoomableDyGraphTSDB(pageCfg);
