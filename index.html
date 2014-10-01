@@ -1,0 +1,69 @@
+<html>
+<head>
+    <title>ZoomableDyGraphTSDB - Dynamic data loading for Dygraphs from OpenTSD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+
+      <div id="graphdiv2" class="graph-cont">
+      </div>
+      <div>
+
+        <span id="range-btns-cont-1" class="btn-group range-btns-cont">
+            <button name="range-btn-5y" class="btn btn-default btn-mini">
+              5y
+            </button>
+            <button name="range-btn-1y" class="btn btn-default btn-mini">
+              1y
+            </button>
+            <button name="range-btn-ytd" class="btn btn-default  btn-mini">
+              YTD
+            </button>
+            <button name="range-btn-6m" class="btn btn-default btn-mini">
+              6m
+            </button>
+            <button name="range-btn-1m" class="btn btn-default  btn-mini">
+              1m
+            </button>
+            <button name="range-btn-1w" class="btn btn-default  btn-mini">
+              1w
+            </button>
+            <button name="range-btn-1d" class="btn btn-default btn-mini">
+              1d
+            </button>
+
+        </span>
+      </div>
+    </div>
+  </div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="js/dygraph-combined.js"></script>
+<script src="js/ZoomableDyGraphTSDB.js"></script>
+<script src="js/GraphDataProvider.js"></script>
+<script src="js/CORSRequester.js"></script>
+<script src="js/spin.js"></script>
+<script src="js/moment.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var pageCfg = {
+            $graphCont: $("#graphdiv2"),
+            $rangeBtnsCont: $("#range-btns-cont-1"),
+            url: "http://witsmeter.tk:4243/api/query?",
+            metric: "100-JT-001",
+            startDate: "2014/07/01"
+        };
+        var zdgt = new ZoomableDyGraphTSDB(pageCfg);
+        zdgt.init();
+    });
+</script>
+
+</body>
+</html>

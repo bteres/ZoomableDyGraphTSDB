@@ -1,0 +1,11 @@
+.graph-cont {
+    height: 300px;
+    width: 100%;
+}
+
+.range-btns-cont  {
+    display: block;
+    float:right;
+    visibility: hidden;
+    margin: 6px 6px;
+}
