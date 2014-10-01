@@ -26,10 +26,10 @@ CORSRequester.prototype.makeRequest = function(dataLoadReq, onResult) {
     var xhr = this._createRequest(url);
 
     xhr.onload = function(){
-        resturnDyData(this.response, onResult);
+        returnDyData(this.response, onResult);
     };
 
-    function resturnDyData(response, onResult) {
+    function returnDyData(response, onResult) {
         var dps = [];
         var obj = JSON.parse(response);
         var data;
