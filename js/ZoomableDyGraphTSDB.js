@@ -2,9 +2,12 @@ function ZoomableDyGraphTSDB (pageCfg) {
     this.$graphCont = pageCfg.$graphCont;
     this.$rangeBtnsCont = pageCfg.$rangeBtnsCont;
     this.$metricDropdownCont = pageCfg.$metricDropdownCont;
+    this.$savePNGCont = pageCfg.$savePNGCont;
     // this.url = pageCfg.url;
     // this.metric = pageCfg.metric;
     this.startDate = pageCfg.startDate;
+
+    // this.graph = new Dygraph(this.$graphCont.get(0));
 
     this.dataProvider = new GraphDataProvider();
     this.dataProvider.newGraphDataCallbacks.add($.proxy(this._onNewGraphData, this));
@@ -21,6 +24,31 @@ ZoomableDyGraphTSDB.prototype.init = function () {
     this._setupRangeButtons();
 
     this._setupDropdownMetrics();
+
+    this._setupSavePNGButton();
+};
+
+ZoomableDyGraphTSDB.prototype._setupSavePNGButton = function() {
+    var self = this;
+
+    this.$savePNGCont.on('click', function (evt) {
+        evt.preventDefault();
+        var startDate = new Date(self.graph.xAxisRange()[0]);
+        var endDate = new Date(self.graph.xAxisRange()[0]);
+        console.log(endDate);
+        var filename = self.metric.concat('_', startDate, '-', endDate);
+        html2canvas(self.$graphCont, {
+            onrendered: function(canvas) {
+                var canvas = Dygraph.Export.asCanvas(self.graph);
+                var a = document.createElement("a");
+                document.body.appendChild(a);
+                a.style = "display: none";
+                a.href = canvas.toDataURL();
+                a.download = filename;
+                a.click();
+            }
+        });
+    });
 };
 
 ZoomableDyGraphTSDB.prototype._setupDropdownMetrics = function () {

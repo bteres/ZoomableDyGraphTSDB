@@ -14,12 +14,14 @@
     <script src="js/CORSRequester.js"></script>
     <script src="js/spin.js"></script>
     <script src="js/moment.js"></script>
+    <script src="js/dygraph-extra.js"></script>
+    <script src="js/html2canvas.js"></script>
 </head>
 <body>
 <div class="container">
 
     <div class="row col-md-12 text-center">
-        <h1>Fuel Cell Monitoring</h1>
+        <h1>Demo for ZoomableDyGraphTSDB</h1>
     </div>
 
     <div id="metricSelection" class="row col-md-12">
@@ -36,6 +38,8 @@
     </div>
 
     <div class="row">
+
+        <button type="button" id="btnSave" class="btn btn-default">Save PNG</button>
 
         <span id="range-btns-cont-1" class="btn-group range-btns-cont">
             <button name="range-btn-5y" class="btn btn-default btn-mini">
@@ -70,6 +74,7 @@
             $graphCont: $("#graphdiv2"),
             $rangeBtnsCont: $("#range-btns-cont-1"),
             $metricDropdownCont: $("#metricDropdown"),
+            $savePNGCont: $("#btnSave"),
             // url: "http://witsmeter.tk:4243/api/query?",
             // metric: "100-JT-001",
             startDate: "2014/07/01"
@@ -77,6 +82,8 @@
         var zdgt = new ZoomableDyGraphTSDB(pageCfg);
         zdgt.init();
     });
+
+    // $("#btnSave").click(zdgt.);
 </script>
 
 </body>

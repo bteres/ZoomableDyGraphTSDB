@@ -9,3 +9,10 @@
     visibility: hidden;
     margin: 6px 6px;
 }
+
+#btnSave  {
+    display: block;
+    float:left;
+    /*visibility: hidden;*/
+    margin: 6px 6px;
+}
