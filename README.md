@@ -15,6 +15,9 @@ Go to [http://witsmeter.tk](http://witsmeter.tk) for a basic demo.
 * ~~Create dropdown list from OpenTSDB metrics and plot on selection.~~
 * **Download a graph utility**
 * **Create a table based on certain criteria**
+* Error handling
+* Export current view data to csv
+* Handle annotations.
 * Fix range selector on change of metric.
 * Support multiple series on one plot.
 * Allow for error bars on graph.

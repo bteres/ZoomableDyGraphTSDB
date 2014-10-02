@@ -2,7 +2,7 @@ function CORSRequester (seriesName) {
     if (seriesName != null)
         this.seriesName = seriesName;
 
-    this.url = 'http://54.69.113.40:4243';
+    this.url = 'http://54.69.113.40/query.php?';
 
     this.onServerDataLoadCallbacks = $.Callbacks();
 
