@@ -77,7 +77,11 @@
             $savePNGCont: $("#btnSave"),
             // url: "http://witsmeter.tk:4243/api/query?",
             // metric: "100-JT-001",
-            startDate: "2014/07/01"
+            startDate: "2014/07/01",
+            metricInfo: [
+                {name: "100-LT-001", exp: "Storage tank level", unit: "%", range: [0, 100]},
+                {name: "100-JT-001", exp: "Total AC power out", unit: "kW", range: [0, 100]}
+            ]
         };
         var zdgt = new ZoomableDyGraphTSDB(pageCfg);
         zdgt.init();

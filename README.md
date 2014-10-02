@@ -13,7 +13,7 @@ Go to [http://witsmeter.tk](http://witsmeter.tk) for a basic demo.
 
 ### TODO
 * ~~Create dropdown list from OpenTSDB metrics and plot on selection.~~
-* **Download a graph utility**
+* ~~**Download a graph utility**~~ *May need some minor modifications*
 * **Create a table based on certain criteria**
 * Error handling
 * Handle annotations.

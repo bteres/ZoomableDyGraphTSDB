@@ -6,6 +6,7 @@ function ZoomableDyGraphTSDB (pageCfg) {
     // this.url = pageCfg.url;
     // this.metric = pageCfg.metric;
     this.startDate = pageCfg.startDate;
+    this.metricInfo = pageCfg.metricInfo;
 
     // this.graph = new Dygraph(this.$graphCont.get(0));
 
@@ -46,6 +47,7 @@ ZoomableDyGraphTSDB.prototype._setupSavePNGButton = function() {
                 a.href = canvas.toDataURL();
                 a.download = filename;
                 a.click();
+                a.parentNode.removeChild(a);
             }
         });
     });
@@ -282,15 +284,29 @@ ZoomableDyGraphTSDB.prototype.drawDygraph = function (graphData) {
     // To keep example1 simple, we just hard code the labels with one series
     var labels = ["Time", this.metric];
 
+    var yLabel = this.metric;
+    var range = [];
+
     var useAutoRange = true; // normally configurable
     var expectMinMax = false; // normally configurable, but for demo easier to hardcode that min/max always available
+
+    var self = this;
+    var metricInfo = this.metricInfo.filter(function(data){
+        return data.name == self.metric
+    });
+
+    if (metricInfo.length >0) {
+        useAutoRange = false;
+        range = [metricInfo[0].range[0], metricInfo[0].range[1]];
+        yLabel = "".concat(metricInfo[0].name, " - ", metricInfo[0].exp, " [", metricInfo[0].unit, "]");
+    }
 
     //Create the axes for dygraphs
     var axes = {};
     if (useAutoRange) {
         axes.y = {valueRange: null};
     } else {
-        axes.y = {valueRange: [0, 2100]};
+        axes.y = {valueRange: range};
     }
 
 
@@ -301,7 +317,7 @@ ZoomableDyGraphTSDB.prototype.drawDygraph = function (graphData) {
         var graphCfg = {
             axes: axes,
             labels: labels,
-            ylabel: labels[1],
+            ylabel: yLabel,
             // xlabel: labels[0],
             customBars: expectMinMax,
             showRangeSelector: true,
@@ -328,7 +344,7 @@ ZoomableDyGraphTSDB.prototype.drawDygraph = function (graphData) {
         var graphCfg = {
             axes: axes,
             labels: labels,
-            ylabel: labels[1],
+            ylabel: yLabel,
             file: dyData,
             dateWindow: [detailStartDateTm.getTime(), detailEndDateTm.getTime()]
         };
