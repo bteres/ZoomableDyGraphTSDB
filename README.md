@@ -13,6 +13,8 @@ Go to [http://witsmeter.tk](http://witsmeter.tk) for a basic demo.
 
 ### TODO
 * Create dropdown list from OpenTSDB metrics and plot on selection.
+* **Download a graph utility**
+* **Create a table based on certain criteria**
 * Support multiple series on one plot.
 * Allow for error bars on graph.
 * Allow for further options from html such as setting start date, metric name, etc.
