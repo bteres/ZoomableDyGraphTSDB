@@ -40,6 +40,7 @@ CORSRequester.prototype.makeRequest = function(dataLoadReq, onResult) {
         if (obj.length > 0) {
             data = obj[0].dps;
             if (data.length > 0){
+                // Fixes range viewer so that end range is corrent
                 if (data[0][0] > dataLoadReq.startDateTm) {
                     dps.push({x: dataLoadReq.startDateTm, y: null});
                 }
@@ -50,6 +51,7 @@ CORSRequester.prototype.makeRequest = function(dataLoadReq, onResult) {
                     // arry.push(row);
                     dps.push({x: row[0], y: row[1]});
                 }
+                // Fixes range viewer so that end range is corrent
                 if (data[data.length-1][0] < dataLoadReq.endDateTm) {
                     dps.push({x: dataLoadReq.endDateTm, y: null});
                 }

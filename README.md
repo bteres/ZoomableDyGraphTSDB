@@ -17,7 +17,8 @@ Go to [http://witsmeter.tk](http://witsmeter.tk) for a basic demo.
 * **Create a table based on certain criteria**
 * Error handling
 * Handle annotations.
-* Fix range selector on change of metric.
+* ~~Fix range selector on change of metric.~~
+* ~~Keep start and end times on change of metric.~~
 * Support multiple series on one plot.
 * Allow for error bars on graph.
 * Allow for further options from html such as setting start date, metric name, etc.

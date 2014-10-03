@@ -35,7 +35,7 @@ ZoomableDyGraphTSDB.prototype._setupSavePNGButton = function() {
     this.$savePNGCont.on('click', function (evt) {
         evt.preventDefault();
         var startDate = new Date(self.graph.xAxisRange()[0]);
-        var endDate = new Date(self.graph.xAxisRange()[0]);
+        var endDate = new Date(self.graph.xAxisRange()[1]);
         console.log(endDate);
         var filename = self.metric.concat('_', startDate, '-', endDate);
         html2canvas(self.$graphCont, {
@@ -82,14 +82,27 @@ ZoomableDyGraphTSDB.prototype._onSuggestionLoad = function(metrics) {
 };
 
 ZoomableDyGraphTSDB.prototype._initializeGraph = function() {
-    // Default range dates
-    var rangeEndMom = moment().utc();
-    var rangeStartMom = moment(this.startDate, "YYYYY/MM/DD");
+    if (this.graph) {
+        if (this.graph.xAxisExtremes()) {
+            var rangeStartMom = moment(this.graph.xAxisExtremes()[0]);
+            var rangeEndMom = moment(this.graph.xAxisExtremes()[1]);
+        }
 
-    // Default detail dates
-    var detailEndMom = moment(rangeEndMom);
-    var detailStartMom = moment(detailEndMom);
-    detailStartMom.add(-10, 'day');
+        if (this.graph.xAxisRange()) {
+            var detailStartMom = moment(this.graph.xAxisRange()[0]);
+            var detailEndMom = moment(this.graph.xAxisRange()[1]);
+        }
+    }
+    else {
+        // Default range dates
+        var rangeEndMom = moment().utc();
+        var rangeStartMom = moment(this.startDate, "YYYYY/MM/DD");
+
+        // Default detail dates
+        var detailEndMom = moment(rangeEndMom);
+        var detailStartMom = moment(detailEndMom);
+        detailStartMom.add(-10, 'day');
+    }
 
     this.showSpinner(true);
     this.dataProvider.loadData(this.metric, rangeStartMom.toDate(),
@@ -290,15 +303,10 @@ ZoomableDyGraphTSDB.prototype.drawDygraph = function (graphData) {
     var useAutoRange = true; // normally configurable
     var expectMinMax = false; // normally configurable, but for demo easier to hardcode that min/max always available
 
-    var self = this;
-    var metricInfo = this.metricInfo.filter(function(data){
-        return data.name == self.metric
-    });
-
-    if (metricInfo.length >0) {
+    if (this.metricInfo[this.metric]) {
         useAutoRange = false;
-        range = [metricInfo[0].range[0], metricInfo[0].range[1]];
-        yLabel = "".concat(metricInfo[0].name, " - ", metricInfo[0].exp, " [", metricInfo[0].unit, "]");
+        range = [this.metricInfo[this.metric].range[0], this.metricInfo[this.metric].range[1]];
+        yLabel = "".concat(this.metric, " - ", this.metricInfo[this.metric].exp, " [", this.metricInfo[this.metric].unit, "]");
     }
 
     //Create the axes for dygraphs
@@ -328,7 +336,8 @@ ZoomableDyGraphTSDB.prototype.drawDygraph = function (graphData) {
             // drawCallback: $.proxy(this._onDyDrawCallback, this),
             zoomCallback: $.proxy(this._onDyZoomCallback, this),
             digitsAfterDecimal: 2,
-            labelsDivWidth: "275"
+            labelsDivWidth: "275",
+            xAxisLabelWidth: 55
         };
         this.graph = new Dygraph(this.$graphCont.get(0), dyData, graphCfg);
 
