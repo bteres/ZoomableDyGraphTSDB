@@ -77,7 +77,7 @@ CORSRequester.prototype.makeRequest = function(dataLoadReq, onResult) {
 };
 
 CORSRequester.prototype.makeSuggestion = function(onResult) {
-    var url = this.url.concat('/api/suggest?type=metrics');
+    var url = this.url.concat('/api/suggest?type=metrics&max=100');
     var xhr = this._createRequest(url);
 
     xhr.onload = function(){
