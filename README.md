@@ -39,3 +39,7 @@ MIT License included in `LICENSE`
 
 ### Contact
 Contact me on [bteres@ieee.org](mailto:bteres@ieee.org) for suggestions, feature requests or to participate in the development.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/bteres/zoomabledygraphtsdb/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
